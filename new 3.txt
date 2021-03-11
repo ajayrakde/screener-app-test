@@ -1,0 +1,10 @@
+null pointer - empty cell
+filenotfound - file is not present
+invalidFormat - using wrong classes for old and new excel file (correct : xls - hssf , xlsx - xssf) 
+	NotOfficeXmlFileException - using file which is not of type office xml 
+		ODFNotOfficeXmlFileException -  ODF file provided
+EmptyFileException
+Microsoft Office Excel cannot access the file
+	- The file that you are trying to open is being used by another program. Close the document in the other program, and try again.
+	- The name of the workbook that you are trying to save is the same as the name of another document that is read-only. 
+	  Try saving the workbook with a different name.
