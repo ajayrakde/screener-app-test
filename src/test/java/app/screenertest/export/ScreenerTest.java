@@ -32,6 +32,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import app.screenertest.datamanager.CSVDataManager;
 import app.screenertest.datamanager.ExcelDataManager;
 import app.screenertest.datamanager.FileStorageManager;
+import app.screenertest.page.CompanyPage;
+import app.screenertest.page.LoginPage;
 
 
 public class ScreenerTest {
@@ -65,40 +67,38 @@ public class ScreenerTest {
   @Test
     public void ExportToExcel()
     {
-	   login();
+	   
+	   LoginPage loginPage = new LoginPage(driver);
+	   driver = loginPage.login();
+	   
 	   String basepath=System.getProperty("user.dir")+"\\src\\main\\resources";
 	   String ipfolderpath=basepath+"\\input\\";
 	   String opfolderpath=basepath+"\\output\\";
 	   
-	   String ipfilename="equity.csv";
+	   String ipfilename="Equity.csv";
 	   
 	   
 	   List<String[]> securitylist= new CSVDataManager(ipfolderpath+ipfilename).getCsvData();
+
 	   System.out.println("start...");
 	   for(String[] securitydata: securitylist) 
 	   {
-		   int ISIN = Integer.parseInt(securitydata[0]);
-		   
-		   int dload=0;
-		   try {
-			   dload =new FileStorageManager().getCountOfFilesFromPath(opfolderpath,".xlsx");
-		   }catch(Exception e) {
-			   
+	   
+		   CompanyPage companyPage = new CompanyPage(driver);
+		   int i=1;
+		   do
+		   {
+			   driver=companyPage.downloadExcel(opfolderpath, securitydata[i]);
+			   i++;
+		   }while(driver==null && i<=2);
+		   if(driver==null)
+		   {
+			   System.out.println("FAILURE : Excel not found for ISIN : "+securitydata[0]+"-"+securitydata[2]+"("+securitydata[3]+")");
 		   }
-		   try {
-			   driver.get("https://www.screener.in/company/"+ISIN+"/consolidated/");
-			   WebDriverWait wait = new WebDriverWait(driver, 5);
-			   wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='top']/div/div/button/span")));
-			   wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='top']/div/div/button/span")));
-			   driver.findElement(By.xpath("//div[@id='top']/div/div/button/span")).click();
-			   while(new FileStorageManager().getCountOfFilesFromPath(opfolderpath,".xlsx")!=dload+1)
-			   {
-				   sleep(1000);
-			   }
-		   }catch( Exception Ex) {
-			  System.out.println("Excel not found for ISIN : "+ISIN+"-"+securitydata[2]+"-"+securitydata[3]);
-		  }
-		  
+		   else
+		   {
+			   System.out.println("SUCCESS : Excel not found for ISIN : "+securitydata[0]+"-"+securitydata[2]+"("+securitydata[3]+")");
+		   }
 	   }
 	   
 	   
@@ -197,20 +197,7 @@ public class ScreenerTest {
 		   }
     }
     
-    public void login() {
-    	
-    	driver.findElement(By.xpath("//a[contains(@href, '/login/')]")).click(); 
-    	while(!driver.getTitle().equalsIgnoreCase("Login - Screener")) 
-    	 {
-    		 sleep(3000);
-    	 } 
-    	 driver.findElement(By.id("id_username")).sendKeys("uitest@robot-mail.com");
-         
-         driver.findElement(By.id("id_password")).sendKeys("Pass@123");
-         
-         driver.findElement(By.xpath("//button[@type='submit']")).click();;     
-    	
-    }
+    
     
     
 }
