@@ -23,7 +23,7 @@ public class FileStorageManager {
                     .filter(Files::isRegularFile)
                     .filter(path -> path.toString().endsWith(type))
                     .map(Path::toFile)
-                    .collect(Collectors.toList());;
+                    .collect(Collectors.toList());
             return files;
             
         } catch (IOException e) {
@@ -44,12 +44,12 @@ public class FileStorageManager {
 	
 	public int getCountOfFilesFromPath(String ext) {
 		try {
-		List<File> files = getAllFilesListFromPath(ext);
-		return files.size();
-		}
-		catch(Exception e){
-			return 0;
-		}		
+                List<File> files = getAllFilesListFromPath(ext);
+                return files == null ? 0 : files.size();
+                }
+                catch(Exception e){
+                        return 0;
+                }
 	}
 	public int getCountOfFilesFromPath(Path path, String ext) {
 		this.path=path;

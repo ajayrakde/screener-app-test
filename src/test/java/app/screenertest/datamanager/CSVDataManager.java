@@ -28,10 +28,9 @@ public class CSVDataManager {
         FileInputStream aFile = null;
 		try {
 			aFile = new FileInputStream(filename);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+                } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                }
         InputStreamReader aInReader = new InputStreamReader(aFile);
         BufferedReader theBufReader = new BufferedReader(aInReader);
 		List<String[]> rows = new ArrayList<>();
@@ -47,10 +46,9 @@ public class CSVDataManager {
 			    rows.add(dataLine);
 			    }
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
 		return rows;
 	}
 	
@@ -73,11 +71,10 @@ public class CSVDataManager {
             // closing writer connection 
             writer.close(); 
             System.out.println("Write completed");
-        } 
-        catch (IOException e) { 
-            // TODO Auto-generated catch block 
-            e.printStackTrace(); 
-        } 
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	

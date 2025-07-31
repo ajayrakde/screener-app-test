@@ -6,28 +6,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import app.screenertest.datamanager.CSVDataManager;
 import app.screenertest.datamanager.ExcelDataManager;
@@ -47,17 +36,13 @@ public class ScreenerTest {
     @Before
    public void init(){
         ChromeOptions options = new ChromeOptions();
-         
-    	 DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-    	 options.addArguments("enable-automation");
+        options.addArguments("enable-automation");
          
          Map<String, Object> prefs = new LinkedHashMap<>();
          
          prefs.put("download.default_directory",System.getProperty("user.dir")+"\\src\\main\\resources\\output\\");
          options.setExperimentalOption("prefs", prefs);
          driver = new ChromeDriver(options);
-         
-         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
          driver.manage().window().maximize();  
          driver.manage().timeouts().pageLoadTimeout(25, TimeUnit.SECONDS);
     	 driver.get("https://www.screener.in");
@@ -90,15 +75,17 @@ public class ScreenerTest {
 		   {
 			   driver=companyPage.downloadExcel(opfolderpath, securitydata[i]);
 			   i++;
-		   }while(driver==null && i<=2);
-		   if(driver==null)
-		   {
-			   System.out.println("FAILURE : Excel not found for ISIN : "+securitydata[0]+"-"+securitydata[2]+"("+securitydata[3]+")");
-		   }
-		   else
-		   {
-			   System.out.println("SUCCESS : Excel not found for ISIN : "+securitydata[0]+"-"+securitydata[2]+"("+securitydata[3]+")");
-		   }
+                   }while(driver==null && i<=2);
+                   if(driver==null)
+                   {
+                           System.out.println("FAILURE : Excel not found for ISIN : "
+                                           + securitydata[0] + "-" + securitydata[2] + "(" + securitydata[3] + ")");
+                   }
+                   else
+                   {
+                           System.out.println("SUCCESS : Excel downloaded for ISIN : "
+                                           + securitydata[0] + "-" + securitydata[2] + "(" + securitydata[3] + ")");
+                   }
 	   }
 	   
 	   
@@ -129,10 +116,9 @@ public class ScreenerTest {
  		   try {
  			   FileInputStream inputStream = new FileInputStream(file);
  			companyInfo.add(new ExcelDataManager().readExcel(inputStream,"summary"));
- 		} catch (IOException e) {
- 			// TODO Auto-generated catch block
- 			e.printStackTrace();
- 		}
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
  		 System.out.println(rec+"-"+file.toString()); 
  		 rec++;
  	   }
@@ -168,10 +154,9 @@ public class ScreenerTest {
 	   		try {
 	   			   FileInputStream inputStream = new FileInputStream(file);
 	   			companyInfo.add(new ExcelDataManager().downloadScore(inputStream,"summary"));
-	   		} catch (IOException e) {
-	   			// TODO Auto-generated catch block
-	   			e.printStackTrace();
-	   		}
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                        }
 	   		 
 	   		System.out.println(rec+"-"+file.toString()); 
 	   		rec++;
@@ -191,10 +176,9 @@ public class ScreenerTest {
     public void sleep(int sec) {
     	try {
 			   Thread.sleep(sec);
-		   } catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		   }
+                } catch (InterruptedException e) {
+                        e.printStackTrace();
+                }
     }
     
     

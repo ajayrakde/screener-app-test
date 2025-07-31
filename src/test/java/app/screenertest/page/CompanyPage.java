@@ -29,14 +29,12 @@ public class CompanyPage {
 			{
 				Thread.sleep(1000);
 			}
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+                } catch (InterruptedException e) {
+                        e.printStackTrace();
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                }
 		return this.driver;
 	}
 	
